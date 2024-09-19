@@ -17,5 +17,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public Student insert(Student student) {
+        studentRepository.save(student);
+        return student;
+    }
+
 
 }

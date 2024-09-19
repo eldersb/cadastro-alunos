@@ -1,6 +1,9 @@
 package br.com.elder.cadastro_alunos.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 import java.time.LocalDate;
@@ -8,6 +11,9 @@ import java.util.Date;
 
 @Entity
 @Table(name = "students")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Student {
 
     @Id
