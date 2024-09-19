@@ -1,8 +1,10 @@
 package br.com.elder.cadastro_alunos.controller;
 
 import br.com.elder.cadastro_alunos.entities.Student;
+import br.com.elder.cadastro_alunos.requests.StudentRequest;
 import br.com.elder.cadastro_alunos.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,12 +23,11 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> insert(@RequestBody Student student) {
-        studentService.insert(student);
+    public ResponseEntity<Student> insert(@RequestBody StudentRequest studentRequest) {
+        Student student = studentService.insert(studentRequest);
 
-        return ResponseEntity.created(null).body(student);
+        return ResponseEntity.status(HttpStatus.CREATED).body(student);
     }
-
 
 
 }
