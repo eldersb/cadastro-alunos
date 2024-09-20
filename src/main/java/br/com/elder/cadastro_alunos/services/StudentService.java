@@ -3,6 +3,7 @@ package br.com.elder.cadastro_alunos.services;
 import br.com.elder.cadastro_alunos.entities.Student;
 import br.com.elder.cadastro_alunos.repository.StudentRepository;
 import br.com.elder.cadastro_alunos.requests.StudentRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

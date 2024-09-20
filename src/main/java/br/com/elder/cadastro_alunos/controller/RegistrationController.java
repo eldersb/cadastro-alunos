@@ -5,9 +5,11 @@ import br.com.elder.cadastro_alunos.exceptions.CursoNotFoundException;
 import br.com.elder.cadastro_alunos.exceptions.StudentNotFoundException;
 import br.com.elder.cadastro_alunos.requests.StudentRequest;
 import br.com.elder.cadastro_alunos.services.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -40,7 +42,10 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> insert(@RequestBody StudentRequest studentRequest) {
+    public ResponseEntity<Student> insert(@RequestBody @Valid StudentRequest studentRequest) {
+
+        System.out.println("Inserindo aluno: " + studentRequest);
+
         Student student = studentService.insert(studentRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(student);
