@@ -44,15 +44,13 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<Student> insert(@RequestBody @Valid StudentRequest studentRequest) {
 
-        System.out.println("Inserindo aluno: " + studentRequest);
-
         Student student = studentService.insert(studentRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(student);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Student> update(@RequestBody StudentRequest newStudent , @PathVariable Long id){
+    public ResponseEntity<Student> update(@RequestBody @Valid StudentRequest newStudent , @PathVariable Long id){
 
         Optional<Student> student = studentService.getStudentById(id);
 
@@ -61,6 +59,10 @@ public class RegistrationController {
         }
 
         Student responseStudent = studentService.update(id, newStudent);
+
+        if (studentService.existsByCPF(responseStudent)){
+            throw new IllegalArgumentException("CPF já cadastrado!");
+        }
 
         return ResponseEntity.ok().body(responseStudent);
 

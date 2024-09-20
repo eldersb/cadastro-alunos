@@ -3,6 +3,7 @@ package br.com.elder.cadastro_alunos.requests;
 import br.com.elder.cadastro_alunos.entities.Curso;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class StudentRequest {
     private String CPF;
 
     @NotBlank
+    @Email
     private String email;
 
     private Curso curso;

@@ -23,8 +23,14 @@ public class Student {
     private Long id;
 
     private String name;
+
+    @Column(unique = true)
     private String RA;
+
+    @Column(unique = true)
     private String CPF;
+
+    @Column(unique = true)
     private String email;
 
     @ManyToOne
