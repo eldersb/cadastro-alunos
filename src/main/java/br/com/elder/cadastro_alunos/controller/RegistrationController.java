@@ -2,6 +2,7 @@ package br.com.elder.cadastro_alunos.controller;
 
 import br.com.elder.cadastro_alunos.entities.Student;
 import br.com.elder.cadastro_alunos.exceptions.CursoNotFoundException;
+import br.com.elder.cadastro_alunos.exceptions.ErrorRegistrationException;
 import br.com.elder.cadastro_alunos.exceptions.StudentNotFoundException;
 import br.com.elder.cadastro_alunos.requests.StudentRequest;
 import br.com.elder.cadastro_alunos.services.StudentService;
@@ -39,12 +40,12 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ResponseEntity<Student> insert(@RequestBody @Valid StudentRequest studentRequest) {
+    public ResponseEntity<Student> insert(@RequestBody @Valid StudentRequest studentRequest) throws ErrorRegistrationException {
 
         List<String> errors = new ArrayList<>();
 
-        Optional<Student> existingStudent = studentService.findByCpf(studentRequest.getCpf());
-        if (existingStudent.isPresent()) {
+        Optional<Student> existingStudentByCpf = studentService.findByCpf(studentRequest.getCpf());
+        if (existingStudentByCpf.isPresent()) {
             errors.add("CPF já cadastrado!");
         }
 
@@ -59,10 +60,8 @@ public class RegistrationController {
         }
 
         if (!errors.isEmpty()) {
-            String errorMessage = String.join(" ", errors);
-            throw new IllegalArgumentException(errorMessage);
+            throw new ErrorRegistrationException(errors);
         }
-
 
         Student student = studentService.insert(studentRequest);
 
@@ -99,13 +98,7 @@ public class RegistrationController {
 
     }
 
-    @ExceptionHandler(StudentNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleException(StudentNotFoundException ex){
-        Map<String, String> reponseMessage = new HashMap<>();
-        reponseMessage.put("message", ex.getMessage());
 
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reponseMessage);
-    }
 
 
 

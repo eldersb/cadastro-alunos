@@ -1,5 +1,6 @@
 package br.com.elder.cadastro_alunos.exceptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -10,6 +11,14 @@ import java.util.Map;
 
 @ControllerAdvice
 public class RestExceptionHandler {
+
+    @ExceptionHandler(StudentNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleException(StudentNotFoundException ex){
+        Map<String, String> reponseMessage = new HashMap<>();
+        reponseMessage.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(reponseMessage);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -23,10 +32,10 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Map<String, String>> handleIllegalArgumentException(IllegalArgumentException ex) {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", ex.getMessage());
+    @ExceptionHandler(ErrorRegistrationException.class)
+    public ResponseEntity<Map<String, Object>> ErrorRegistrationException(ErrorRegistrationException ex) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("messages", ex.getMessages());
         return ResponseEntity.badRequest().body(response);
     }
 
