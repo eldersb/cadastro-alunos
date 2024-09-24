@@ -43,7 +43,6 @@ public class StudentService {
 
         return null;
 
-
     }
 
 
@@ -57,12 +56,17 @@ public class StudentService {
         return studentRepository.findById(id);
     }
 
-    public Boolean existsByCPF(Student id){
-
-        Student student = new Student();
-
-        return student.getCPF() != null;
-
+    public Optional<Student> findByCpf(String cpf) {
+        return studentRepository.findByCpf(cpf);
     }
+
+    public Optional<Student> findByRa(String ra) {
+        return studentRepository.findByRa(ra);
+    }
+
+    public Optional<Student> findByEmail(String email) {
+        return studentRepository.findByEmail(email);
+    }
+
 
 }

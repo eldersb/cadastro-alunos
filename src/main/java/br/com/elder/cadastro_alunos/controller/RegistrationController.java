@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/students")
@@ -44,6 +41,29 @@ public class RegistrationController {
     @PostMapping
     public ResponseEntity<Student> insert(@RequestBody @Valid StudentRequest studentRequest) {
 
+        List<String> errors = new ArrayList<>();
+
+        Optional<Student> existingStudent = studentService.findByCpf(studentRequest.getCpf());
+        if (existingStudent.isPresent()) {
+            errors.add("CPF já cadastrado!");
+        }
+
+        Optional<Student> existingStudentByRa = studentService.findByRa(studentRequest.getRa());
+        if (existingStudentByRa.isPresent()) {
+            errors.add("RA já cadastrado!");
+        }
+
+        Optional<Student> existingStudentByEmail = studentService.findByEmail(studentRequest.getEmail());
+        if (existingStudentByEmail.isPresent()) {
+            errors.add("Email já cadastrado!");
+        }
+
+        if (!errors.isEmpty()) {
+            String errorMessage = String.join(" ", errors);
+            throw new IllegalArgumentException(errorMessage);
+        }
+
+
         Student student = studentService.insert(studentRequest);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(student);
@@ -59,10 +79,6 @@ public class RegistrationController {
         }
 
         Student responseStudent = studentService.update(id, newStudent);
-
-        if (studentService.existsByCPF(responseStudent)){
-            throw new IllegalArgumentException("CPF já cadastrado!");
-        }
 
         return ResponseEntity.ok().body(responseStudent);
 

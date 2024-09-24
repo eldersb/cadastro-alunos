@@ -20,10 +20,10 @@ public class StudentRequest {
     private String name;
 
     @NotBlank
-    private String RA;
+    private String ra;
 
     @NotBlank
-    private String CPF;
+    private String cpf;
 
     @NotBlank
     @Email

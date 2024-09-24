@@ -25,10 +25,10 @@ public class Student {
     private String name;
 
     @Column(unique = true)
-    private String RA;
+    private String ra;
 
     @Column(unique = true)
-    private String CPF;
+    private String cpf;
 
     @Column(unique = true)
     private String email;
